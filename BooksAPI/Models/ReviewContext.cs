@@ -9,5 +9,5 @@ public class ReviewContext : DbContext
   {
   }
 
-  public DbSet<ReviewItem> ReviewItems { get; set; } = null!;
+  public DbSet<Review> Reviews { get; set; } = null!;
 }
