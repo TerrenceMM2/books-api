@@ -20,16 +20,16 @@ namespace BooksAPI.Controllers
       _context = context;
     }
 
-    // GET: api/Reviews
+    // GET: api/reviews
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
+    public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetReviews()
     {
-      return await _context.Reviews.ToListAsync();
+      return await _context.Reviews.Select(x => ReviewToDTO(x)).ToListAsync();
     }
 
-    // GET: api/Reviews/5
+    // GET: api/reviews/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<Review>> GetReview(long id)
+    public async Task<ActionResult<ReviewDTO>> GetReview(long id)
     {
       var review = await _context.Reviews.FindAsync(id);
 
@@ -38,41 +38,10 @@ namespace BooksAPI.Controllers
         return NotFound();
       }
 
-      return review;
+      return ReviewToDTO(review);
     }
 
-    // PUT: api/Reviews/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutReview(long id, Review review)
-    {
-      if (id != review.Id)
-      {
-        return BadRequest();
-      }
-
-      _context.Entry(review).State = EntityState.Modified;
-
-      try
-      {
-        await _context.SaveChangesAsync();
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (!ReviewExists(id))
-        {
-          return NotFound();
-        }
-        else
-        {
-          throw;
-        }
-      }
-
-      return NoContent();
-    }
-
-    // POST: api/Reviews
+    // POST: api/reviews
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
     public async Task<ActionResult<Review>> PostReview(Review review)
@@ -83,25 +52,10 @@ namespace BooksAPI.Controllers
       return CreatedAtAction(nameof(GetReview), new { id = review.Id }, review);
     }
 
-    // DELETE: api/Reviews/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteReview(long id)
-    {
-      var review = await _context.Reviews.FindAsync(id);
-      if (review == null)
+    private static ReviewDTO ReviewToDTO(Review review) =>
+      new ReviewDTO
       {
-        return NotFound();
-      }
-
-      _context.Reviews.Remove(review);
-      await _context.SaveChangesAsync();
-
-      return NoContent();
-    }
-
-    private bool ReviewExists(long id)
-    {
-      return _context.Reviews.Any(e => e.Id == id);
-    }
+        Text = review.Text
+      };
   }
 }
