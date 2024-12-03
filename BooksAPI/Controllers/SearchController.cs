@@ -23,7 +23,7 @@ namespace BooksAPI.Controllers
 
     // GET: api/search
     [HttpGet("{searchTerm}")]
-    public async Task<ActionResult<VolumeDTO>> GetBooks(IConfiguration configuration, string searchTerm)
+    public async Task<ActionResult<List<VolumeDTO>>> GetBooks(IConfiguration configuration, string searchTerm)
     {
       if (string.IsNullOrEmpty(searchTerm))
       {
@@ -38,27 +38,28 @@ namespace BooksAPI.Controllers
 
       Console.WriteLine("Building Volumes Request ...");
       var request = service.Volumes.List(searchTerm);
-      request.MaxResults = 1;
+      request.MaxResults = 10;
 
       Console.WriteLine($"Volumes Request ... {request}");
 
       Console.WriteLine("Executing Volumes Request ...");
       var results = await request.ExecuteAsync();
+      var volumeList = new List<VolumeDTO>();
 
       // Display the results
       foreach (var item in results.Items)
       {
-        Console.WriteLine($"Title: {item.VolumeInfo.Title}");
-        if (item.VolumeInfo.Authors != null)
+        var volume = new VolumeDTO
         {
-          Console.WriteLine($"Author(s): {string.Join(", ", item.VolumeInfo.Authors)}");
-        }
-        Console.WriteLine($"Publisher: {item.VolumeInfo.Publisher}");
-        Console.WriteLine($"Description: {item.VolumeInfo.Description}");
-        Console.WriteLine(new string('-', 50));
+          Title = item.VolumeInfo.Title,
+          Authors = item.VolumeInfo.Authors ?? [],
+          Publisher = item.VolumeInfo.Publisher,
+          Description = item.VolumeInfo.Description
+        };
+        volumeList.Add(volume);
       }
 
-      return Ok();
+      return volumeList;
 
     }
   }
