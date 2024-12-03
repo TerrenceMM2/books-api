@@ -36,31 +36,35 @@ namespace BooksAPI.Controllers
         ApiKey = configuration["GOOGLE_BOOKS_API:Key"]
       });
 
-      Console.WriteLine("Building Volumes Request ...");
+      // logger.LogInformation("Building Volumes Request ...");
       var request = service.Volumes.List(searchTerm);
       request.MaxResults = 10;
 
-      Console.WriteLine($"Volumes Request ... {request}");
-
-      Console.WriteLine("Executing Volumes Request ...");
-      var results = await request.ExecuteAsync();
-      var volumeList = new List<VolumeDTO>();
-
-      // Display the results
-      foreach (var item in results.Items)
+      // logger.LogInformation("Executing Volumes Request ...");
+      try
       {
-        var volume = new VolumeDTO
+        var results = await request.ExecuteAsync();
+        var volumeList = new List<VolumeDTO>();
+
+        // Display the results
+        foreach (var item in results.Items)
         {
-          Title = item.VolumeInfo.Title,
-          Authors = item.VolumeInfo.Authors ?? [],
-          Publisher = item.VolumeInfo.Publisher,
-          Description = item.VolumeInfo.Description
-        };
-        volumeList.Add(volume);
+          var volume = new VolumeDTO
+          {
+            Title = item.VolumeInfo.Title,
+            Authors = item.VolumeInfo.Authors ?? [],
+            Publisher = item.VolumeInfo.Publisher,
+            Description = item.VolumeInfo.Description
+          };
+          volumeList.Add(volume);
+        }
+
+        return volumeList;
       }
-
-      return volumeList;
-
+      catch (Exception ex)
+      {
+        return StatusCode(500, ex.Message);
+      }
     }
   }
 }
