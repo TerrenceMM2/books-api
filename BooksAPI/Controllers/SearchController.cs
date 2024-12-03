@@ -9,6 +9,8 @@ using BooksAPI.Models;
 using Google.Apis.Books.v1;
 using Google.Apis.Services;
 using Google.Apis.Books.v1.Data;
+using Microsoft.IdentityModel.Tokens;
+using System.Net;
 
 namespace BooksAPI.Controllers
 {
@@ -20,20 +22,22 @@ namespace BooksAPI.Controllers
     public SearchController() { }
 
     // GET: api/search
-    [HttpGet]
-    public async void GetBooks(IConfiguration configuration)
+    [HttpGet("{searchTerm}")]
+    public async Task<ActionResult<VolumeDTO>> GetBooks(IConfiguration configuration, string searchTerm)
     {
-      Console.WriteLine($"API KEY >>> {configuration["GOOGLE_BOOKS_API:Key"]}");
+      if (string.IsNullOrEmpty(searchTerm))
+      {
+        return BadRequest();
+      }
+
       var service = new BooksService(new BaseClientService.Initializer
       {
         ApplicationName = "BooksAPI",
         ApiKey = configuration["GOOGLE_BOOKS_API:Key"]
       });
 
-      var query = "Ready Player One";
-
       Console.WriteLine("Building Volumes Request ...");
-      var request = service.Volumes.List(query);
+      var request = service.Volumes.List(searchTerm);
       request.MaxResults = 1;
 
       Console.WriteLine($"Volumes Request ... {request}");
@@ -53,6 +57,8 @@ namespace BooksAPI.Controllers
         Console.WriteLine($"Description: {item.VolumeInfo.Description}");
         Console.WriteLine(new string('-', 50));
       }
+
+      return Ok();
 
     }
   }
