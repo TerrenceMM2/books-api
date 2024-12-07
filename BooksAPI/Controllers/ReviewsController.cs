@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BooksAPI.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BooksAPI.Controllers
 {
@@ -22,40 +23,60 @@ namespace BooksAPI.Controllers
 
     // GET: api/reviews
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetReviews()
+    public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
     {
-      return await _context.Reviews.Select(x => ReviewToDTO(x)).ToListAsync();
+      return await _context.Review.ToListAsync();
     }
 
     // GET: api/reviews/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<ReviewDTO>> GetReview(long id)
+    public async Task<ActionResult<Review>> GetReview(string id)
     {
-      var review = await _context.Reviews.FindAsync(id);
+      var review = await _context.Review.FindAsync(id);
 
       if (review == null)
       {
         return NotFound();
       }
 
-      return ReviewToDTO(review);
+      return review;
     }
 
     // POST: api/reviews
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Review>> PostReview(Review review)
+    public async Task<ActionResult<Review>> PostReview(ReviewRequest reviewRequest)
     {
-      _context.Reviews.Add(review);
+      if (reviewRequest == null)
+      {
+        return BadRequest("Request cannot be null");
+      }
+
+      if (reviewRequest.ReviewText.IsNullOrEmpty() || reviewRequest.StarRating.CompareTo(0) == 0)
+      {
+        return BadRequest("ReviewText & StarRating cannot be null or empty");
+      }
+
+      var review = new Review
+      {
+        BookId = reviewRequest.BookId,
+        ReviewText = reviewRequest.ReviewText,
+        StarRating = reviewRequest.StarRating,
+      };
+
+      _context.Review.Add(review);
       await _context.SaveChangesAsync();
 
       return CreatedAtAction(nameof(GetReview), new { id = review.Id }, review);
     }
 
-    private static ReviewDTO ReviewToDTO(Review review) =>
-      new ReviewDTO
-      {
-        Text = review.Text
-      };
+    // private static ReviewDTO ReviewToDTO(Review review) =>
+    //   new ReviewDTO
+    //   {
+    //     Id = review.Id,
+    //     BookId = review.BookId,
+    //     StarRating = review.StarRating,
+    //     ReviewText = review.ReviewText
+    //   };
   }
 }
