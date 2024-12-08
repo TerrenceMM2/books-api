@@ -1,16 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using BooksAPI.Models;
 using Google.Apis.Books.v1;
 using Google.Apis.Services;
-using Google.Apis.Books.v1.Data;
-using Microsoft.IdentityModel.Tokens;
-using System.Net;
 
 namespace BooksAPI.Controllers
 {
@@ -21,6 +12,12 @@ namespace BooksAPI.Controllers
 
     public SearchController() { }
 
+    /// <summary>
+    /// Calls Google Books API
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <param name="searchTerm"></param>
+    /// <returns>A list of Volumes returned from Google Books API.</returns>
     // GET: api/search
     [HttpGet("{searchTerm}")]
     public async Task<ActionResult<List<VolumeDTO>>> GetBooks(IConfiguration configuration, string searchTerm)
