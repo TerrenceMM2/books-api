@@ -19,12 +19,15 @@ on:
 env:
   AZURE_RESOURCE_GROUP: GivingData-BooksAPI # target resource, must match the {resource-group-name} you setup in the pre-requisties
   WEB_APP_NAME: BooksAPI-WebApp # set the name for the Web App on Azure
-  CONTAINER_IMAGE_NAME: app-todo-sample # set the name for the container image
+  CONTAINER_IMAGE_NAME: books-api-image # set the name for the container image
   SQL_CONNECTION_STRING: ${{ secrets.SQL_CONNECTION_STRING }} # connection string for the Azure SQL database -> must be in the secrets
   ACR_NAME: acrgivingdatabooks # set the name for the Azure Container Registry
   ACR_LOGIN_SERVER: acrgivingdatabooks.azurecr.io # fqdn for the Azure Container Registry
   ACR_USERNAME: ${{ secrets.ACR_USERNAME }} # user name for accessing Azure Container Registry
   ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }} # password for accesing the Azure Container Registry
+
+permissions:
+  id-token: write
 
 jobs:
   build:
