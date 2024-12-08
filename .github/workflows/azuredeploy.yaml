@@ -40,6 +40,12 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v2
 
+      - name: Check Secrets
+        run: |
+          echo ${{ secrets.AZURE_CLIENT_ID }}
+          echo ${{ secrets.AZURE_TENANT_ID }}
+          echo ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
       # This example uses federated identity (OIDC) for authentication
       - name: Login for az cli commands
         uses: azure/login@v1.4.0
