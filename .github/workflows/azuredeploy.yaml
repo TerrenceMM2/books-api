@@ -22,7 +22,7 @@ on: workflow_dispatch
 env:
   AZURE_RESOURCE_GROUP: GivingData-BooksAPI # target resource, must match the {resource-group-name} you setup in the pre-requisties
   WEB_APP_NAME: BooksAPI # set the name for the Web App on Azure
-  ACR_NAME: acrtodosample # set the name for the Azure Container Registry
+  ACR_NAME: acrgivingdatabooks # set the name for the Azure Container Registry
   CONTAINER_IMAGE_NAME: books-api-container # set the name for the container image
   SQL_SERVER_NAME: givingdatabooks.database.windows.net # set the name for the Azure SQL Server
   SQL_SERVER_ADMIN_LOGIN: givingdatabooksadmin # set the name for the Azure SQL Server admin login
