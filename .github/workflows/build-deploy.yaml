@@ -47,10 +47,10 @@ jobs:
       - name: Build and push container image to registry
         uses: docker/build-push-action@v2
         with:
-          context: ./application/
+          context: ./BooksAPI/
           push: true
           tags: ${{ env.ACR_LOGIN_SERVER }}/${{ env.CONTAINER_IMAGE_NAME }}:${{ github.sha }}
-          file: ./application/Dockerfile
+          file: ./BooksAPI/Dockerfile
 
   deploy:
     needs: [build]
@@ -141,7 +141,7 @@ jobs:
         env:
           ASPNETCORE_ENVIRONMENT: Development
           ConnectionStrings__MyDbConnection: ${{ env.SQL_CONNECTION_STRING }}
-        working-directory: application
+        working-directory: BooksAPI
 
       - name: Swap to production slot
         run: |
