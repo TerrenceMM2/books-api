@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BooksAPI.Models;
@@ -21,14 +16,21 @@ namespace BooksAPI.Controllers
       _context = context;
     }
 
-    // GET: api/reviews
+    /// <summary>
+    /// Returns all reviews for all books.
+    /// </summary>
+    /// <returns>A list of Reviews</returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
     {
       return await _context.Review.ToListAsync();
     }
 
-    // GET: api/reviews/5
+    /// <summary>
+    /// Returns review for a single book.
+    /// </summary>
+    /// <param name="bookId"></param>
+    /// <returns>A single Review</returns>
     [HttpGet("{bookId}")]
     public async Task<ActionResult<Review>> GetReview(string bookId)
     {
@@ -42,10 +44,14 @@ namespace BooksAPI.Controllers
       return review;
     }
 
-    // POST: api/reviews
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    /// <summary>
+    /// Adds new review for a single book.
+    /// </summary>
+    /// <param name="reviewRequest"></param>
+    /// <returns>The newly created Review omitting the id.</returns>
     [HttpPost]
-    public async Task<ActionResult<Review>> PostReview(ReviewRequest reviewRequest)
+    [ActionName(nameof(GetReview))]
+    public async Task<ActionResult<ReviewResponse>> PostReview([FromBody] ReviewRequest reviewRequest)
     {
       if (reviewRequest == null)
       {
@@ -67,16 +73,14 @@ namespace BooksAPI.Controllers
       _context.Review.Add(review);
       await _context.SaveChangesAsync();
 
-      return CreatedAtAction(nameof(GetReview), new { id = review.Id }, review);
-    }
+      var response = new ReviewResponse
+      {
+        BookId = review.BookId,
+        ReviewText = review.ReviewText,
+        StarRating = review.StarRating,
+      };
 
-    // private static ReviewDTO ReviewToDTO(Review review) =>
-    //   new ReviewDTO
-    //   {
-    //     Id = review.Id,
-    //     BookId = review.BookId,
-    //     StarRating = review.StarRating,
-    //     ReviewText = review.ReviewText
-    //   };
+      return CreatedAtAction(nameof(GetReview), new { id = review.Id }, response);
+    }
   }
 }
