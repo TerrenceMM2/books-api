@@ -29,10 +29,10 @@ namespace BooksAPI.Controllers
     }
 
     // GET: api/reviews/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Review>> GetReview(string id)
+    [HttpGet("{bookId}")]
+    public async Task<ActionResult<Review>> GetReview(string bookId)
     {
-      var review = await _context.Review.FindAsync(id);
+      var review = await _context.Review.FirstOrDefaultAsync(r => r.BookId == bookId);
 
       if (review == null)
       {
