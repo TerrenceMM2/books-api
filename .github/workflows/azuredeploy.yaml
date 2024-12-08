@@ -21,7 +21,7 @@ on: workflow_dispatch
 # 2. Change these variables for your configuration (and keep these in sync with the build-deploy.yaml workflow):
 env:
   AZURE_RESOURCE_GROUP: GivingData-BooksAPI # target resource, must match the {resource-group-name} you setup in the pre-requisties
-  WEB_APP_NAME: BooksAPI # set the name for the Web App on Azure
+  WEB_APP_NAME: BooksAPI-WebApp # set the name for the Web App on Azure
   ACR_NAME: acrgivingdatabooks # set the name for the Azure Container Registry
   CONTAINER_IMAGE_NAME: books-api-container # set the name for the container image
   SQL_SERVER_NAME: givingdatabooks # set the name for the Azure SQL Server
