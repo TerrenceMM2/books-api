@@ -42,10 +42,9 @@ jobs:
 
       # This example uses federated identity (OIDC) for authentication
       - name: Login for az cli commands
-        uses: azure/login@v1.4.0
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
