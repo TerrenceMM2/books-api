@@ -59,7 +59,7 @@ jobs:
   deploy:
     needs: [build]
     runs-on: ubuntu-latest
-    environment: test
+    environment: production
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
