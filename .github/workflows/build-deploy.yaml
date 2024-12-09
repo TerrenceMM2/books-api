@@ -117,7 +117,7 @@ jobs:
           connection-strings-json: |
             [
               {
-                "name": "MyDbConnection",
+                "name": "AZURE_SQL_CONNECTIONSTRING",
                 "value": "${{ env.SQL_CONNECTION_STRING }}",
                 "type": "SQLAzure",
                 "slotSetting": false
