@@ -263,7 +263,7 @@
           "linuxFxVersion": "[parameters('containerImage')]",
           "connectionStrings": [
             {
-              "name": "MyDbConnection",
+              "name": "AZURE_SQL_CONNECTIONSTRING",
               "connectionString": "[concat('Data Source=tcp:', reference(resourceId('Microsoft.Sql/servers/', variables('sqlserverName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', parameters('dbName'), ';User Id=', parameters('dbAdminLogin'), '@', reference(resourceId('Microsoft.Sql/servers/', variables('sqlserverName'))).fullyQualifiedDomainName, ';Password=', parameters('dbAdminLoginPassword'), ';')]",
               "type": "SQLAzure"
             }
