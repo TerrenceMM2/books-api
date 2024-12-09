@@ -32,6 +32,7 @@ else
   connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
 }
 
+Console.WriteLine($"DB Connection ... {connection}");
 builder.Services.AddDbContext<ReviewContext>(options =>
     options.UseSqlServer(connection));
 
