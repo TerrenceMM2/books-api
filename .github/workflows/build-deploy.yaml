@@ -137,15 +137,15 @@ jobs:
           dotnet-version: "8.0.x"
 
       # This task updates the database with the lates schema. Valid for intial setup and small non-changes. For breaking changes, other strategy needs to be in place.
-      - name: Update Database
-        run: |
-          dotnet tool install --global dotnet-ef
-          dotnet tool restore
-          dotnet ef database update
-        env:
-          ASPNETCORE_ENVIRONMENT: Development
-          ConnectionStrings__MyDbConnection: ${{ env.SQL_CONNECTION_STRING }}
-        working-directory: BooksAPI
+      # - name: Update Database
+      #   run: |
+      #     dotnet tool install --global dotnet-ef
+      #     dotnet tool restore
+      #     dotnet ef database update
+      #   env:
+      #     ASPNETCORE_ENVIRONMENT: Development
+      #     ConnectionStrings__MyDbConnection: ${{ env.SQL_CONNECTION_STRING }}
+      #   working-directory: BooksAPI
 
       - name: Swap to production slot
         run: |
