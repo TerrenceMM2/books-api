@@ -29,7 +29,7 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-  connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
+  connection = Environment.GetEnvironmentVariable("SQL_CONNECTION_STRING");
 }
 
 Console.WriteLine($"DB Connection ... {connection}");
