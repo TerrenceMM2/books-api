@@ -32,16 +32,19 @@ namespace BooksAPI.Controllers
     /// <param name="bookId"></param>
     /// <returns>A single Review</returns>
     [HttpGet("{bookId}")]
-    public async Task<ActionResult<Review>> GetReview(string bookId)
+    public async Task<ActionResult<List<Review>>> GetReview(string bookId)
     {
+      var reviews = new List<Review>();
       var review = await _context.Review.FirstOrDefaultAsync(r => r.BookId == bookId);
 
       if (review == null)
       {
-        return NotFound();
+        return Ok("No results found");
       }
 
-      return review;
+      reviews.Add(review);
+
+      return reviews;
     }
 
     /// <summary>
