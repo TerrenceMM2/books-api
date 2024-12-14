@@ -4,6 +4,20 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// https://learn.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-9.0#cors-with-named-policy-and-middleware
+var AllowedSpecificOrigins = "AllowedSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+  options.AddPolicy(name: AllowedSpecificOrigins,
+    policy =>
+    {
+      policy.WithOrigins("http://localhost:5173")
+      .AllowAnyHeader()
+      .AllowAnyMethod();
+    });
+});
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
@@ -45,7 +59,7 @@ if (app.Environment.IsDevelopment())
   app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
+app.UseCors(AllowedSpecificOrigins);
 app.UseAuthorization();
 app.MapControllers();
 
