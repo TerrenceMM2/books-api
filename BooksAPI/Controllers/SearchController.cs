@@ -2,9 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using BooksAPI.Models;
 using Google.Apis.Books.v1;
 using Google.Apis.Services;
-using Microsoft.IdentityModel.Tokens;
 using Google.Apis.Books.v1.Data;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace BooksAPI.Controllers
 {
