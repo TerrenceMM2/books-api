@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using BooksAPI.Models;
 using Google.Apis.Books.v1;
 using Google.Apis.Services;
+using Microsoft.IdentityModel.Tokens;
+using Google.Apis.Books.v1.Data;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace BooksAPI.Controllers
 {
@@ -27,6 +30,8 @@ namespace BooksAPI.Controllers
         return BadRequest();
       }
 
+      Console.WriteLine($"Searching for ... {searchTerm}");
+
       var service = new BooksService(new BaseClientService.Initializer
       {
         ApplicationName = "BooksAPI",
@@ -45,14 +50,8 @@ namespace BooksAPI.Controllers
 
         foreach (var item in results.Items)
         {
-          var volume = new VolumeDTO
-          {
-            Id = item.Id,
-            Title = item.VolumeInfo.Title,
-            Authors = item.VolumeInfo.Authors ?? [],
-            Publisher = item.VolumeInfo.Publisher,
-            Description = item.VolumeInfo.Description
-          };
+          var volume = CreateVolumeDTO(item);
+
           volumeList.Add(volume);
         }
 
@@ -63,5 +62,24 @@ namespace BooksAPI.Controllers
         return StatusCode(500, ex.Message);
       }
     }
+
+    private static VolumeDTO CreateVolumeDTO(Volume volume)
+    {
+      if (volume == null) return new VolumeDTO();
+
+      var volumeDTO = new VolumeDTO
+      {
+        Id = volume.Id,
+        Title = volume.VolumeInfo?.Title ?? "",
+        Authors = volume.VolumeInfo?.Authors ?? new string[0],
+        Publisher = volume.VolumeInfo?.Publisher ?? "",
+        Description = volume.VolumeInfo?.Description ?? "",
+        InfoLink = volume.VolumeInfo?.InfoLink ?? "",
+        ImageLink = volume.VolumeInfo?.ImageLinks?.Thumbnail ?? ""
+      };
+
+      return volumeDTO;
+    }
+
   }
 }
