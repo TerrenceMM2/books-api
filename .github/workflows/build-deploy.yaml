@@ -21,6 +21,7 @@ env:
   WEB_APP_NAME: BooksAPI-WebApp # set the name for the Web App on Azure
   CONTAINER_IMAGE_NAME: books-api-image # set the name for the container image
   SQL_CONNECTION_STRING: ${{ secrets.SQL_CONNECTION_STRING }} # connection string for the Azure SQL database -> must be in the secrets
+  AZURE_SQL_CONNECTIONSTRING: ${{ secrets.AZURE_SQL_CONNECTIONSTRING}}
   ACR_NAME: acrgivingdatabooks # set the name for the Azure Container Registry
   ACR_LOGIN_SERVER: acrgivingdatabooks.azurecr.io # fqdn for the Azure Container Registry
   ACR_USERNAME: ${{ secrets.ACR_USERNAME }} # user name for accessing Azure Container Registry
