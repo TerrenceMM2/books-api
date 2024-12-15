@@ -12,7 +12,7 @@ builder.Services.AddCors(options =>
   options.AddPolicy(name: AllowedSpecificOrigins,
     policy =>
     {
-      policy.WithOrigins("http://localhost:5173", "https://books-react-three.vercel.app/")
+      policy.WithOrigins("http://localhost:5173", "https://books-react-three.vercel.app")
       .AllowAnyHeader()
       .AllowAnyMethod();
     });
