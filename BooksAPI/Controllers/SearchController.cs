@@ -19,7 +19,6 @@ namespace BooksAPI.Controllers
     /// <param name="configuration"></param>
     /// <param name="searchTerm"></param>
     /// <returns>A list of Volumes returned from Google Books API.</returns>
-    // GET: api/search
     [HttpGet("{searchTerm}")]
     public async Task<ActionResult<List<VolumeDTO>>> GetBooks(IConfiguration configuration, string searchTerm)
     {
@@ -54,6 +53,46 @@ namespace BooksAPI.Controllers
         }
 
         return volumeList;
+      }
+      catch (Exception ex)
+      {
+        return StatusCode(500, ex.Message);
+      }
+    }
+
+    /// <summary>
+    /// Calls Google Books API
+    /// </summary>
+    /// <param name="configuration"></param>
+    /// <param name="volumeId"></param>
+    /// <returns>A single Volume result returned from Google Books API.</returns>
+    [HttpGet("volume/{volumeId}")]
+    public async Task<ActionResult<VolumeDTO>> GetBookById(IConfiguration configuration, string volumeId)
+    {
+      if (string.IsNullOrEmpty(volumeId))
+      {
+        return BadRequest();
+      }
+
+      Console.WriteLine($"Searching for ... {volumeId}");
+
+      var service = new BooksService(new BaseClientService.Initializer
+      {
+        ApplicationName = "BooksAPI",
+        ApiKey = configuration["GOOGLE_BOOKS_API:Key"]
+      });
+
+      var request = service.Volumes.Get(volumeId);
+
+      Console.WriteLine("Executing Volumes Request ...");
+      try
+      {
+        var result = await request.ExecuteAsync();
+        Console.WriteLine("Volumes Request Complete ...");
+
+        var volume = CreateVolumeDTO(result);
+
+        return volume;
       }
       catch (Exception ex)
       {
