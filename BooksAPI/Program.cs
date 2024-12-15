@@ -43,12 +43,9 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-  var value = Environment.GetEnvironmentVariable("GOOGLE_BOOKS_API");
-  Console.WriteLine($"GBooks ... {value}");
-  connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
+  connection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
 }
 
-Console.WriteLine($"DB Connection ... {connection}");
 builder.Services.AddDbContext<ReviewContext>(options =>
     options.UseSqlServer(connection));
 
