@@ -118,7 +118,7 @@ jobs:
             [
               {
                 "name": "AZURE_SQL_CONNECTIONSTRING",
-                "value": "${{ env.SQL_CONNECTION_STRING }}",
+                "value": "${{ env.AZURE_SQL_CONNECTIONSTRING }}",
                 "type": "SQLAzure",
                 "slotSetting": false
               }
@@ -144,7 +144,7 @@ jobs:
       #     dotnet ef database update
       #   env:
       #     ASPNETCORE_ENVIRONMENT: Development
-      #     ConnectionStrings__MyDbConnection: ${{ env.SQL_CONNECTION_STRING }}
+      #     ConnectionStrings__MyDbConnection: ${{ env.AZURE_SQL_CONNECTIONSTRING }}
       #   working-directory: BooksAPI
 
       - name: Swap to production slot
