@@ -43,6 +43,8 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
+  var value = Environment.GetEnvironmentVariable("GOOGLE_BOOKS_API");
+  Console.WriteLine($"GBooks ... {value}");
   connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
 }
 
