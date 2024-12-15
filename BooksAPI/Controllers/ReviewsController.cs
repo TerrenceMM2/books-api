@@ -29,20 +29,24 @@ namespace BooksAPI.Controllers
     /// <summary>
     /// Returns review for a single book.
     /// </summary>
-    /// <param name="bookId"></param>
+    /// <param name="volumeId"></param>
     /// <returns>A single Review</returns>
-    [HttpGet("{bookId}")]
-    public async Task<ActionResult<List<Review>>> GetReview(string bookId)
+    [HttpGet("{volumeId}")]
+    public async Task<ActionResult<List<Review>>> GetReview(string volumeId)
     {
       var reviews = new List<Review>();
-      var review = await _context.Review.FirstOrDefaultAsync(r => r.BookId == bookId);
+      var reviewsResults = await _context.Review.Where(r => r.VolumeId == volumeId).ToListAsync();
 
-      if (review == null)
+      if (reviews == null)
       {
         return Ok("No results found");
       }
 
-      reviews.Add(review);
+      foreach (var review in reviewsResults)
+      {
+        reviews.Add(review);
+      }
+
 
       return reviews;
     }
@@ -68,7 +72,7 @@ namespace BooksAPI.Controllers
 
       var review = new Review
       {
-        BookId = reviewRequest.BookId,
+        VolumeId = reviewRequest.VolumeId,
         ReviewText = reviewRequest.ReviewText,
         StarRating = reviewRequest.StarRating,
       };
@@ -78,7 +82,7 @@ namespace BooksAPI.Controllers
 
       var response = new ReviewResponse
       {
-        BookId = review.BookId,
+        VolumeId = review.VolumeId,
         ReviewText = review.ReviewText,
         StarRating = review.StarRating,
       };
