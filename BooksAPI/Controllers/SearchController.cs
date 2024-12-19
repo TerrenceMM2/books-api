@@ -14,20 +14,22 @@ namespace BooksAPI.Controllers
     public SearchController() { }
 
     /// <summary>
-    /// Calls Google Books API
+    /// Calls Google Books API to search for a book by the provided query string.
     /// </summary>
     /// <param name="configuration"></param>
-    /// <param name="searchTerm"></param>
+    /// <param name="query">The book to search for.</param>
+    /// <param name="page">The page of result set.</param>
+    /// <param name="pageSize">The number of results per page.</param>
     /// <returns>A list of Volumes returned from Google Books API.</returns>
-    [HttpGet("{searchTerm}")]
-    public async Task<ActionResult<List<VolumeDTO>>> GetBooks(IConfiguration configuration, string searchTerm)
+    [HttpGet]
+    public async Task<ActionResult<List<VolumeDTO>>> GetBooks(IConfiguration configuration, [FromQuery] string query, [FromQuery] int page = 1, [FromQuery] int? pageSize = 10)
     {
-      if (string.IsNullOrEmpty(searchTerm))
+      if (string.IsNullOrEmpty(query))
       {
         return BadRequest();
       }
 
-      Console.WriteLine($"Searching for ... {searchTerm}");
+      Console.WriteLine($"Searching for ... {query}");
 
       var service = new BooksService(new BaseClientService.Initializer
       {
@@ -35,8 +37,9 @@ namespace BooksAPI.Controllers
         ApiKey = configuration["GOOGLE_BOOKS_API:Key"]
       });
 
-      var request = service.Volumes.List(searchTerm);
-      request.MaxResults = 10;
+      var request = service.Volumes.List(query);
+      request.MaxResults = pageSize;
+      request.StartIndex = page;
 
       Console.WriteLine("Executing Volumes Request ...");
       try
@@ -61,7 +64,7 @@ namespace BooksAPI.Controllers
     }
 
     /// <summary>
-    /// Calls Google Books API
+    /// Calls Google Books API and returns a single result by VolumeId.
     /// </summary>
     /// <param name="configuration"></param>
     /// <param name="volumeId"></param>
