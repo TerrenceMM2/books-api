@@ -1,6 +1,7 @@
 # Book Search API
 
-[![Build image, push & deploy](https://github.com/TerrenceMM2/books-api/actions/workflows/build-deploy.yaml/badge.svg)](https://github.com/TerrenceMM2/books-api/actions/workflows/build-deploy.yaml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/terrencemm2/books-api/build-deploy.yaml?style=for-the-badge&logo=github-actions&logoColor=white&label=Build%20%26%20Deploy&link=https%3A%2F%2Fgithub.com%2FTerrenceMM2%2Fbooks-api%2Factions)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/terrencemm2/books-api?style=for-the-badge&logo=github)
 
 A .NET API server to support the [Book Search UI](https://github.com/TerrenceMM2/books-react).
 
