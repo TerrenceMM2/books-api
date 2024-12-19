@@ -39,7 +39,7 @@ namespace BooksAPI.Controllers
 
       var request = service.Volumes.List(query);
       request.MaxResults = pageSize;
-      request.StartIndex = page;
+      request.StartIndex = (page - 1) * pageSize;
 
       Console.WriteLine("Executing Volumes Request ...");
       try
